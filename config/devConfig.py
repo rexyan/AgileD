@@ -11,3 +11,5 @@ class DevConfig(Config):
         "port": 8000,
         "debug": True
     }
+
+    SECRET_KEY = "AgileD:Dev:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
