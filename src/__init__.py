@@ -5,6 +5,8 @@ from config import CONFIG
 from src.router import bp
 from sanic_openapi import swagger_blueprint
 
+from src.utils.LogUtils import logging_config
+
 app = Sanic(__name__)
 
 
@@ -17,3 +19,6 @@ app.config.from_object(CONFIG)
 
 # add swagger
 app.blueprint(swagger_blueprint)
+
+# add logger
+logging_config(CONFIG.LOG_ROTATION, CONFIG.LOG_RETENTION)
