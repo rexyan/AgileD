@@ -67,3 +67,4 @@ wcwidth==0.1.7
 websockets==6.0
 zipp==0.5.2
 zope.interface==4.6.0
+sanic-openapi==0.6.0
