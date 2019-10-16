@@ -28,6 +28,7 @@ class LouPanHandler(BaseHandler):
 
         with ESUtils(CONFIG.ES_INDEX_REAL_ESTATE, **CONFIG.ES_CONFIG) as es:
             search_result = es.search_data(query_body)
+        filter_result = LouPanHandler.filter_es_term_bucket_value("City", search_result)
+        log.info(f"api filter result:{filter_result}")
 
-        log.info(f"es query body:{query_body}, query result:{search_result}")
-        return self.build_response(search_result)
+        return self.build_response(filter_result)

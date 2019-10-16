@@ -1,3 +1,4 @@
+from loguru import logger as log
 from elasticsearch import Elasticsearch
 
 
@@ -13,7 +14,9 @@ class ESUtils:
         return self
 
     def search_data(self, query_body):
-        return self.es.search(index=self.index, body=query_body)
+        result = self.es.search(index=self.index, body=query_body)
+        log.info(f"es query body:{query_body}, query result:{result}")
+        return result
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass

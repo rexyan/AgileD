@@ -58,8 +58,12 @@ class BaseHandler(HTTPMethodView):
                     kwargs['request_params'] = request_params
                     return await BaseHandler.dec_func(cls, func, request, *args, **kwargs)
                 else:
-                    return BaseHandler.build_response(cls, {'info': 'error', 'desc': f'参数不正确，缺少参数：{set(keys).difference(set(params))}'}, "30001", 402)
+                    return BaseHandler.build_response(cls, {'info': 'error',
+                                                            'desc': f'参数不正确，缺少参数：{set(keys).difference(set(params))}'},
+                                                      "30001", 402)
+
             return auth_param
+
         return wrapper
 
     @staticmethod
@@ -85,7 +89,7 @@ class BaseHandler(HTTPMethodView):
         return True
 
     @classmethod
-    def authorized(*permission):
+    def authorized(cls, *permission):
         """
         用户登录，权限校验装饰器
         :return:
@@ -109,3 +113,16 @@ class BaseHandler(HTTPMethodView):
             return decorated_function
 
         return decorator
+
+    @staticmethod
+    def filter_es_term_bucket_value(term_name: str, es_term_result: dict) -> dict or list:
+        """
+        获取 es term 后 bucket 中的结果
+        :param term_name:
+        :param es_term_result:
+        :return:
+        """
+        if es_term_result:
+            return es_term_result.get("aggregations", {}).get(term_name, {}).get("buckets")
+        else:
+            return {}
