@@ -3,7 +3,7 @@ from src.handler.base.baseHandler import BaseHandler
 
 
 class HealthHandler(BaseHandler):
-    @doc.summary("健康检查接口")
+    @doc.summary("健康检查")
     async def get(self, response):
         """
         登录

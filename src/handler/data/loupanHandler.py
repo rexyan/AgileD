@@ -7,7 +7,8 @@ from src.handler.base.baseHandler import BaseHandler
 
 
 class LouPanHandler(BaseHandler):
-    @doc.summary("获取每个城市对应的楼盘数量")
+    @doc.summary("城市楼盘数量")
+    @doc.description('获取每个城市的楼盘数量')
     @doc.consumes({'Authorization': str}, location='header')
     @BaseHandler.authorized(["10001, 10002"])
     async def get(self, response, **kwargs):

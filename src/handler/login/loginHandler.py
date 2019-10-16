@@ -5,7 +5,7 @@ from src.handler.login.vo.loginVo import LoginReqVo, LoginRspVo
 
 
 class LoginHandler(BaseHandler):
-    @doc.summary('登录')
+    @doc.summary('用户登录')
     @doc.description('WJT 登录接口，此接口获取 token, 其余接口需要在请求头中传递此 token 值')
     @doc.consumes(LoginReqVo, location='body')
     @doc.produces(LoginRspVo)
