@@ -13,8 +13,13 @@ class ESUtils:
         self.es = Elasticsearch([self.address])
         return self
 
-    def search_data(self, query_body):
+    def search(self, query_body):
         result = self.es.search(index=self.index, body=query_body)
+        log.info(f"es query body:{query_body}, query result:{result}")
+        return result
+
+    def mget(self, query_body):
+        result = self.es.mget(query_body, doc_type=None, index=self.index, params=None)
         log.info(f"es query body:{query_body}, query result:{result}")
         return result
 

@@ -19,10 +19,9 @@ class BaseHandler(HTTPMethodView):
         :return:
         """
         try:
-            response = await func(cls, request, *args, **kwargs)
-            return response
+            return await func(cls, request, *args, **kwargs)
         except Exception as e:
-            return {'info': 'error'}
+            return {'info': f'error: {e}'}
 
     def auth_params(*keys):
         """
