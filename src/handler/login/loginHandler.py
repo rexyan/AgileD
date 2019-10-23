@@ -12,7 +12,7 @@ class LoginHandler(BaseHandler):
     @BaseHandler.auth_params('username', "password")
     async def post(self, response, **kwargs):
         """
-        登录
+        用户登录
         :return:
         """
         # 获取用户名，密码

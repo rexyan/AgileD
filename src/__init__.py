@@ -5,7 +5,7 @@ from config import CONFIG
 from src.router import bp
 from sanic_openapi import swagger_blueprint
 
-from src.utils.LogUtils import logging_config
+from src.utils.logUtils import logging_config
 
 app = Sanic(__name__)
 

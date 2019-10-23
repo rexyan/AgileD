@@ -57,9 +57,7 @@ class BaseHandler(HTTPMethodView):
                     kwargs['request_params'] = request_params
                     return await BaseHandler.dec_func(cls, func, request, *args, **kwargs)
                 else:
-                    return BaseHandler.build_response(cls, {'info': 'error',
-                                                            'desc': f'参数不正确，缺少参数：{set(keys).difference(set(params))}'},
-                                                      "30001", 402)
+                    return BaseHandler.build_response(cls, {'info': 'error', 'desc': f'参数不正确，缺少参数：{set(keys).difference(set(params))}'}, "30001", 402)
 
             return auth_param
 
@@ -97,17 +95,15 @@ class BaseHandler(HTTPMethodView):
         def decorator(f):
             @wraps(f)
             async def decorated_function(request, *args, **kwargs):
-                # run some method that checks the request
-                # for the client's authorization status
+                # 权限校验
                 is_authorized = BaseHandler.check_authorization_status(request)
+
                 if is_authorized:
-                    # the user is authorized.
-                    # run the handler method and return the response
-                    response = await f(request, *args, **kwargs)
-                    return response
+                    # 若为 url 参数, 将参数更新至 kwargs 中。例如 http:xxx/xxx?name=zhangsan&age=20
+                    kwargs.update(args[0].raw_args)
+                    return await f(request, *args, **kwargs)
                 else:
-                    # the user is not authorized.
-                    return json({'status': 'not_authorized'}, 403)
+                    return response.json({'status': 'not_authorized'}, 403)
 
             return decorated_function
 
@@ -125,3 +121,15 @@ class BaseHandler(HTTPMethodView):
             return es_term_result.get("aggregations", {}).get(term_name, {}).get("buckets")
         else:
             return {}
+
+    @staticmethod
+    def filter_es_scroll_hits_value(scroll_hits_value: dict) -> (dict or list, str):
+        """
+        获取 es scroll 后 hits 中的结果
+        :param scroll_hits_value:
+        :return:
+        """
+        if scroll_hits_value:
+            return scroll_hits_value.get("hits", {}).get("hits", {}), scroll_hits_value.get("_scroll_id")
+        else:
+            return {}, ""
